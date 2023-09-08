@@ -26,7 +26,8 @@
             this IServiceCollection services,
             Func<TAggregateRoot> aggregateFactory,
             Func<TAggregateRoot, TStreamId> aggregateIdFactory,
-            List<string> membersToIgnoreInVerification)
+            List<string> membersToIgnoreInVerification,
+            Dictionary<Type, IEnumerable<string>> collectionMatchingSpec)
             where TAggregateRoot : class, IAggregateRootEntity, ISnapshotable
             where TStreamId : class
         {
@@ -34,6 +35,7 @@
                 x.GetRequiredService<IHostApplicationLifetime>(),
                 aggregateIdFactory,
                 membersToIgnoreInVerification,
+                collectionMatchingSpec,
                 x.GetRequiredService<ISnapshotVerificationRepository>(),
                 new AggregateSnapshotRepository<TAggregateRoot>(
                     x.GetRequiredService<MsSqlSnapshotStoreQueries>(),
